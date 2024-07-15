@@ -13,6 +13,7 @@ from azure.mgmt.network.models import (
     NetworkInterfaceIPConfiguration as AzureNetworkInterfaceIPConfiguration,
     PublicIPAddress as AzurePublicIPAddress
 )
+from cloud.azure.azure_helper import AzureHelper
 from cloud.azure.compute_resource_provider import ComputeResourceProvider
 from cloud.azure.network_resource_provider import NetworkResourceProvider
 from cloud.cloud import ICloud, FailoverPossibility, FailoverPossibilityCode
@@ -114,13 +115,23 @@ class Azure(ICloud):
                     new_vm_zone: int, failover_state: FailoverState):
         azure_old_vm: VirtualMachine = self.crp.get_vm(resource_group_name, old_vm_name)
         location = azure_old_vm.location
-        azure_new_vm: VirtualMachine = VirtualMachine(
-            location=azure_old_vm.location,
-            zones=[new_vm_zone],
-            hardware_profile=azure_old_vm.hardware_profile
-        )
-        azure_new_vm.name = new_vm_name
 
+        new_calc_vm_zone = str(new_vm_zone) if new_vm_zone else AzureHelper.get_zone_for_newvm(azure_old_vm, location)
+
+        if new_calc_vm_zone:
+            azure_new_vm: VirtualMachine = VirtualMachine(
+                location=azure_old_vm.location,
+                zones=[new_calc_vm_zone],
+                hardware_profile=azure_old_vm.hardware_profile
+            )
+        else:
+            azure_new_vm: VirtualMachine = VirtualMachine(
+                location=azure_old_vm.location,
+                hardware_profile=azure_old_vm.hardware_profile
+            )
+
+        azure_new_vm.name = new_vm_name
+        print(f"New Zone for the vm: {new_calc_vm_zone}")
         old_vm_update_is_required = False
 
         # storage profile
