@@ -6,6 +6,7 @@ from utils import get_confirmation
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Example program to handle VM information.")
     parser.add_argument("-oldvm", "--old_vm_name", help="Name of the old virtual machine", type=str, required=True)
     parser.add_argument("-newvm", "--new_vm_name", help="Name of the new virtual machine", type=str, required=True)
     parser.add_argument("-subid", "--subscription_id", help="azure subscription ID", type=str, required=True)
