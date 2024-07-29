@@ -116,17 +116,46 @@ class Azure(ICloud):
         azure_old_vm: VirtualMachine = self.crp.get_vm(resource_group_name, old_vm_name)
         location = azure_old_vm.location
 
-        new_calc_vm_zone = str(new_vm_zone) if new_vm_zone else AzureHelper.get_zone_for_newvm(azure_old_vm, location)
+
+        valid_zones_for_new_vm = AzureHelper.get_zone_for_newvm(azure_old_vm, location)
+        
+        if count(valid_zones_for_new_vm) == 0:
+            # new VM cannot be zonal
+            if new_vm_zone not None:
+                raise Exeception("The recovered VM with the disks is not eligible to be placed in provided zone, zone:{}".format(new_vm_zone))
+            else:
+                # allocate regional vm
+                azure_new_vm: VirtualMachine = VirtualMachine(
+                    location=location,
+                    hardware_profile=azure_old_vm.hardware_profile
+                )
+        else:
+            if new_vm_zone is None:
+                # allocate VM in randomly picked zone
+                azure_new_vm: VirtualMachine = VirtualMachine(
+                    location=location,
+                    zones=valid_zones_for_new_vm,
+                    hardware_profile=azure_old_vm.hardware_profile
+                )
+            elif new_vm_zone in valid_zones_for_new_vm:
+                # allocate zonal vm in new_vm_zone
+                azure_new_vm: VirtualMachine = VirtualMachine(
+                    location=location,
+                    zones=new_vm_zone,
+                    hardware_profile=azure_old_vm.hardware_profile
+                )
+            else:
+                raise Exeception("The recovered VM with the disks is not eligible to be placed in provided zone, zone:{}".format(new_vm_zone))
 
         if new_calc_vm_zone:
             azure_new_vm: VirtualMachine = VirtualMachine(
-                location=azure_old_vm.location,
+                location=location,
                 zones=[new_calc_vm_zone],
                 hardware_profile=azure_old_vm.hardware_profile
             )
         else:
             azure_new_vm: VirtualMachine = VirtualMachine(
-                location=azure_old_vm.location,
+                location=location,
                 hardware_profile=azure_old_vm.hardware_profile
             )
 
