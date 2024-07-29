@@ -147,20 +147,7 @@ class Azure(ICloud):
             else:
                 raise Exception("The recovered VM with the disks is not eligible to be placed in provided zone, zone:{}".format(new_vm_zone))
 
-        if new_calc_vm_zone:
-            azure_new_vm: VirtualMachine = VirtualMachine(
-                location=location,
-                zones=[new_calc_vm_zone],
-                hardware_profile=azure_old_vm.hardware_profile
-            )
-        else:
-            azure_new_vm: VirtualMachine = VirtualMachine(
-                location=location,
-                hardware_profile=azure_old_vm.hardware_profile
-            )
-
         azure_new_vm.name = new_vm_name
-        print(f"New Zone for the vm: {new_calc_vm_zone}")
         old_vm_update_is_required = False
 
         # storage profile
