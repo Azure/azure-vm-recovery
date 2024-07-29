@@ -4,7 +4,7 @@ from azure.mgmt.compute.v2023_09_01.models import VirtualMachine
 class AzureHelper:
 
     @classmethod
-    def get_zone_for_newvm(cls, azure_old_vm: VirtualMachine, location: str) -> str:
+    def get_zone_for_newvm(cls, azure_old_vm: VirtualMachine, location: str) -> [str]:
         account_types_ZRS = ["PREMIUM_ZRS", "STANDARDSSD_ZRS"]
         # checking if the disk are zrs or not -- all disk need to be zrs for zonal vm. 
         # check if all disks are ZRS. If yes, new VM will be zonal. Otherwise, if LRS disks are found, new VM will be regional
@@ -19,7 +19,7 @@ class AzureHelper:
             current_zone = azure_old_vm.zones[0]
             filtered_list = [value for value in av_zones if value != current_zone]
             new_zone = random.choice(filtered_list)
-            return new_zone
+            return [new_zone]
         else:
             # in case of LRS disk, creating a regional vm
             return None

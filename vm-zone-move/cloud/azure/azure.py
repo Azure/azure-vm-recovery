@@ -119,10 +119,10 @@ class Azure(ICloud):
 
         valid_zones_for_new_vm = AzureHelper.get_zone_for_newvm(azure_old_vm, location)
         
-        if count(valid_zones_for_new_vm) == 0:
+        if len(valid_zones_for_new_vm) == 0:
             # new VM cannot be zonal
-            if new_vm_zone not None:
-                raise Exeception("The recovered VM with the disks is not eligible to be placed in provided zone, zone:{}".format(new_vm_zone))
+            if new_vm_zone is not None:
+                raise Exception("The recovered VM with the disks is not eligible to be placed in provided zone, zone:{}".format(new_vm_zone))
             else:
                 # allocate regional vm
                 azure_new_vm: VirtualMachine = VirtualMachine(
@@ -145,7 +145,7 @@ class Azure(ICloud):
                     hardware_profile=azure_old_vm.hardware_profile
                 )
             else:
-                raise Exeception("The recovered VM with the disks is not eligible to be placed in provided zone, zone:{}".format(new_vm_zone))
+                raise Exception("The recovered VM with the disks is not eligible to be placed in provided zone, zone:{}".format(new_vm_zone))
 
         if new_calc_vm_zone:
             azure_new_vm: VirtualMachine = VirtualMachine(
