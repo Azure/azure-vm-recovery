@@ -14,7 +14,7 @@ class AzureHelper:
                 are_all_disks_zrs = False
             print("type of storage account of disk", azure_data_disk, "is", azure_data_disk.managed_disk.storage_account_type.upper())
         if are_all_disks_zrs:
-            # Each region that supports Availability Zones has 3+ such zones, denoted as 1, 2, 3...
+            # all regions dont support availability zones but the regions that supports Availability Zones has 3+ such zones, denoted as 1, 2, 3...
             av_zones = ["1", "2", "3"]
             current_zone = azure_old_vm.zones[0]
             filtered_list = [value for value in av_zones if value != current_zone]

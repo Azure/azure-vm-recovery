@@ -1,15 +1,16 @@
 # Failover scripts
 
-During zone down scenario, the VM cannot be accessed. These scripts will bring back the vm in a different zone or region depending upon the type of disks (ZRS/LRS) attached to the vm. Affectively moving the VM. 
+During zone down scenario, customers will not be able to access impacted VMs and consequently the data persisted in their data disks. These scripts will bring back the vm in a different zone or region depending upon the type of disks (ZRS/LRS) attached to the vm. Effectively moving the VM. 
 
 ## How to Use? 
 
 * Ensure that python is installed on the machine where these scripts are going to be run. 
 * Install the required python packages as mentioned in requirements.txt
+  * pip install -r requirements.txt
 * Run main.py with the arguments as the details of the affected VM in the zonal outage. In case all the requirements are met, the VM will be brought back up in a different zone or region with the disks attached.
 
 ### Example: 
-python "<path to main.py>" --subscription_id "<subscription id>" --old_vm_name "<old vm name>" --new_vm_name "<recovered vm name>" --resource_group_name "<resource group name>" --new_zone "<zone number>" --admin_password "<password>"
+python "path to main.py" --subscription_id "subscription id" --old_vm_name "old vm name" --new_vm_name "recovered vm name" --resource_group_name "resource group name" --new_zone "zone number" --admin_password "password"
 
 ## Parameters
 
