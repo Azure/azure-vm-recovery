@@ -1,6 +1,6 @@
 # Failover scripts
 
-During zone down scenario, customers will not be able to access impacted VMs and consequently the data persisted in their data disks. These scripts will bring back the vm in a different zone or region depending upon the type of disks (ZRS/LRS) attached to the vm. Effectively moving the VM. 
+During zone down scenario, customers will not be able to access impacted VMs and consequently the data persisted in their data disks. These scripts will bring back the vm in a different zone or region depending upon the type of disks (ZRS/LRS) attached to the vm. Effectively moving the VM. Once the VM is moved, the ARM ID and UniqueVMId for the VM will be changed.
 
 ## How to Use? 
 
