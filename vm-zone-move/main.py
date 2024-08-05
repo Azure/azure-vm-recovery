@@ -7,20 +7,20 @@ from utils import get_confirmation
 
 def main():
     parser = argparse.ArgumentParser(description="Example program to handle VM information.")
-    parser.add_argument("oldVMName", help="Name of the old virtual machine", type=str)
-    parser.add_argument("newVMName", help="Name of the new virtual machine", type=str)
-    parser.add_argument("subscriptionId", help="azure subscription ID", type=str)
-    parser.add_argument("resourceGroupName", help="Name of the resource group", type=str)
-    parser.add_argument("newZone", help="New availability zone", type=int)
-    parser.add_argument("adminPassword", help="New VM admin password", type=str)
+    parser.add_argument("-oldvm", "--old_vm_name", help="Name of the old virtual machine", type=str, required=True)
+    parser.add_argument("-newvm", "--new_vm_name", help="Name of the new virtual machine", type=str, required=True)
+    parser.add_argument("-subid", "--subscription_id", help="azure subscription ID", type=str, required=True)
+    parser.add_argument("-rg", "--resource_group_name", help="Name of the resource group", type=str, required=True)
+    parser.add_argument("-nz", "--new_zone", help="New availability zone", type=int, required=False)
+    parser.add_argument("-pswd", "--admin_password", help="New VM admin password", type=str, required=True)
 
     args = parser.parse_args()
-    old_vm_name = args.oldVMName
-    new_vm_name = args.newVMName
-    subscription_id = args.subscriptionId
-    resource_group_name = args.resourceGroupName
-    new_zone = args.newZone
-    admin_password = args.adminPassword
+    old_vm_name = args.old_vm_name
+    new_vm_name = args.new_vm_name
+    subscription_id = args.subscription_id
+    resource_group_name = args.resource_group_name
+    new_zone = args.new_zone
+    admin_password = args.admin_password
 
     print(f"Old VM Name: {old_vm_name}")
     print(f"New VM Name: {new_vm_name}")

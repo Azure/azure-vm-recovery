@@ -1,2 +1,4 @@
 venv/
 failover state store/
+.idea/
+vm-zone-move/.idea
